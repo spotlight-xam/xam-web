@@ -17,15 +17,6 @@ export function Dialog() {
         style={{
           display: "flex",
           flexDirection: "row",
-          width: "100%",
-          height: "30px",
-          backgroundColor: "#D9D9D9",
-        }}
-      ></div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
           alignItems: "center",
           padding: "5px",
           height: "58px",
