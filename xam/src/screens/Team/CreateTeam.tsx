@@ -50,7 +50,6 @@ export function CreateTeam() {
           margin: "100px",
         }}
       >
-        <link rel="icon" type="image/PNG+xml" href="../assets/xam.PNG" />
         <h1 style={{ font: "Inter", width: "350px" }}>
           Create your team and add members to collaborate effectively
         </h1>

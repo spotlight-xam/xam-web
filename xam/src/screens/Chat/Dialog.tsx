@@ -1,8 +1,22 @@
 import { PlusOutlined, SendOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { Chat } from "./Chat";
+import { useState } from "react";
+
+export interface Data {
+  id: String;
+  date: String;
+  name: String;
+  content: String;
+}
 
 export function Dialog() {
+  //입력
+  const [chat, setChat] = useState("");
+
+  const onChat = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setChat(event.target.value);
+
   return (
     <div
       style={{
@@ -60,6 +74,8 @@ export function Dialog() {
               outline: "none",
               fontSize: "large",
             }}
+            value={chat}
+            onChange={onChat}
             placeholder="메시지를 입력하세요"
             type="text"
           />

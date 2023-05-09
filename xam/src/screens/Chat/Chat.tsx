@@ -1,7 +1,18 @@
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
+import { useState } from "react";
+
+export interface Data {
+  date: String;
+  name: String;
+  content: String;
+}
 
 export function Chat() {
+  const getData = () => {};
+
+  const [data, setData] = useState<Data[]>([]);
+
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <div

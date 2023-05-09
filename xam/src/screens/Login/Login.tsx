@@ -1,80 +1,96 @@
-import { Button, Form, Input } from "antd";
-import { useState } from "react";
+import { Button } from "antd";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+interface User {
+  //유저 객체 - 이메일, 비밀번호
+  ID: String;
+  Password: String;
+}
 
 export function Login() {
-  const [id, onId] = useState("");
-  const [password, onPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [login, setLogin] = useState(false);
+  const navigate = useNavigate();
 
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
+  const onEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+  const onPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
+  const onLogin = () => {
+    //localStorage에서 데이터 가져오기
+    const userData = localStorage.getItem(email);
+
+    //userData가 null이 아닌 경우에만 User 객체로 변환
+    let user: User | null = null;
+    if (userData) user = JSON.parse(userData) as User;
+
+    if (user?.Password !== password) {
+      alert("등록되지 않은 회원입니다.");
+      return;
+    }
+    setLogin(true);
   };
+
+  useEffect(() => {
+    if (login) {
+      navigate("/home");
+    }
+  }, [login]);
+
   return (
-    <div style={{}}>
-      <div
-        style={{
-          paddingTop: 200,
-          alignItems: "center",
-          borderColor: "#616161",
-          borderRadius: 10,
-        }}
-      >
-        <div
-          color={"white"}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column", width: "350px" }}>
+        <input
           style={{
-            margin: 50,
-            backgroundColor: "#EF933A",
-            borderRadius: 10,
+            backgroundColor: "#FFE8B6",
+            borderRadius: "5px",
+            border: "none",
+            height: "30px",
+            margin: "10px",
+            padding: "5px",
           }}
+          placeholder="User Email"
+          onChange={onEmail}
+          value={email}
+        />
+        <input
+          style={{
+            backgroundColor: "#FFE8B6",
+            borderRadius: "5px",
+            border: "none",
+            height: "30px",
+            margin: "10px",
+            padding: "5px",
+          }}
+          placeholder="Password"
+          onChange={onPassword}
+          value={password}
+        />
+        <Button
+          style={{
+            backgroundColor: "#F4900C",
+            color: "white",
+            height: "40px",
+            margin: "40px 10px",
+            padding: "5px",
+          }}
+          onClick={onLogin}
         >
-          Xam!
-        </div>
-        <div style={{ flexDirection: "column" }}>
-          <Form
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            style={{ maxWidth: 600 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-            <Form.Item
-              label="Email"
-              name="Email"
-              rules={[{ required: true, message: "Please input your email!" }]}
-            >
-              <Input />
-            </Form.Item>
-
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                { required: true, message: "Please input your password!" },
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
-
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button
-                style={{ backgroundColor: "#EF933A" }}
-                type="primary"
-                htmlType="submit"
-              >
-                로그인
-              </Button>
-            </Form.Item>
-          </Form>
-          <div>
-            <div>아직 회원이 아닌가요?</div>
-          </div>
-        </div>
+          Join
+        </Button>
       </div>
     </div>
   );
