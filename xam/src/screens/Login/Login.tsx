@@ -53,6 +53,11 @@ export function Login() {
       }}
     >
       <div style={{ display: "flex", flexDirection: "column", width: "350px" }}>
+        <img
+          style={{ width: "100px", margin: "10px" }}
+          alt="Xam_IMG"
+          src="img/xam.png"
+        />
         <input
           style={{
             backgroundColor: "#FFE8B6",
