@@ -52,11 +52,18 @@ export function Login() {
         height: "100vh",
       }}
     >
-      <div style={{ display: "flex", flexDirection: "column", width: "350px" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "350px",
+        }}
+      >
         <img
           style={{ width: "100px", margin: "10px" }}
           alt="Xam_IMG"
-          src="img/xam.png"
+          src="img/xam.PNG"
         />
         <input
           style={{
@@ -64,6 +71,7 @@ export function Login() {
             borderRadius: "5px",
             border: "none",
             height: "30px",
+            width: "100%",
             margin: "10px",
             padding: "5px",
           }}
@@ -77,6 +85,7 @@ export function Login() {
             borderRadius: "5px",
             border: "none",
             height: "30px",
+            width: "100%",
             margin: "10px",
             padding: "5px",
           }}
@@ -87,8 +96,10 @@ export function Login() {
         <Button
           style={{
             backgroundColor: "#F4900C",
+            borderRadius: "5px",
             color: "white",
             height: "40px",
+            width: "100%",
             margin: "40px 10px",
             padding: "5px",
           }}
