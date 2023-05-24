@@ -1,14 +1,22 @@
 import { Button } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-interface User {
-  //유저 객체 - 이메일, 비밀번호
-  ID: String;
-  Password: String;
+interface UserRequest {
+  //access token을 첨부해서 보냄
+  username: String;
+  email: String;
+  password: String;
+}
+
+interface PostJoinRes {
+  email: string;
+  authToken: string;
 }
 
 export function Join() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -19,15 +27,28 @@ export function Join() {
   const onPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
+  const onUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(event.target.value);
+  };
 
-  const onJoin = () => {
-    const newUser: User = {
-      ID: email,
-      Password: password,
+  const onJoin = async () => {
+    const newUser: UserRequest = {
+      username: username,
+      email: email,
+      password: password,
     };
-    localStorage.setItem(email, JSON.stringify(newUser));
+
+    try{
+      const res = axios.post<PostJoinRes>("localhost:8080/signup", newUser);
+      return res;
+    } catch (error) {
+      alert('회원가입에 실패했습니다.');
+      console.log(error);
+    }
+
     navigate("/login");
   };
+
   return (
     <div
       style={{
@@ -50,6 +71,20 @@ export function Join() {
           style={{ width: "100px", margin: "10px" }}
           alt="Xam_IMG"
           src="img/xam.png"
+        />
+        <input
+          style={{
+            backgroundColor: "#FFE8B6",
+            borderRadius: "5px",
+            border: "none",
+            height: "30px",
+            width: "100%",
+            margin: "10px",
+            padding: "5px",
+          }}
+          placeholder="Username"
+          onChange={onUsername}
+          value={username}
         />
         <input
           style={{
