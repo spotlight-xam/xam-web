@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-interface userLoginReq {
+interface postLoginReq {
   username: String;
   password: String;
 }
@@ -21,11 +21,11 @@ export function Login() {
   };
 
   const onLogin = () => {
-    const data: userLoginReq = {
+    const data: postLoginReq = {
       username: username,
       password: password,
     };
-    const token = axios.post<userLoginReq>("localhost:8080/login", data);
+    const token = axios.post("localhost:8080/login", data);
     navigate("./home");
   };
 

@@ -3,14 +3,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-interface UserRequest {
+interface postJoinReq {
   //access token을 첨부해서 보냄
   username: String;
   email: String;
   password: String;
 }
 
-interface PostJoinRes {
+interface postJoinRes {
   email: string;
   authToken: string;
 }
@@ -32,17 +32,17 @@ export function Join() {
   };
 
   const onJoin = async () => {
-    const newUser: UserRequest = {
+    const newUser: postJoinReq = {
       username: username,
       email: email,
       password: password,
     };
 
-    try{
-      const res = axios.post<PostJoinRes>("localhost:8080/signup", newUser);
+    try {
+      const res = axios.post<postJoinRes>("localhost:8080/signup", newUser);
       return res;
     } catch (error) {
-      alert('회원가입에 실패했습니다.');
+      alert("회원가입에 실패했습니다.");
       console.log(error);
     }
 
