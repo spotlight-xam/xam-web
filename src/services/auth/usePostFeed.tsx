@@ -1,0 +1,3 @@
+interface usePostFeed {
+  feeId: Number;
+}

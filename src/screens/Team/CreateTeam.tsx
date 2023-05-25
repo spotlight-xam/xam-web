@@ -1,13 +1,19 @@
 import { Button } from "antd";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface postCreateTeamReq {
   teamName: String;
 }
 
+interface postCreateTeamRes {
+  teamId: Number;
+}
+
 export function CreateTeam() {
   const [team, setTeam] = useState("");
+  const navigate = useNavigate();
 
   const onTeam = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTeam(event.target.value);
@@ -18,7 +24,15 @@ export function CreateTeam() {
       teamName: team,
     };
 
-    axios.post("localhost:8080/team/create", newTeam);
+    try {
+      const teamId = axios.post<postCreateTeamRes>(
+        "localhost:8080/team/create",
+        newTeam
+      );
+      navigate(`/chat/${teamId}`);
+    } catch (error) {
+      alert("팀 생성에 실패하였습니다.");
+    }
   };
 
   return (
@@ -42,7 +56,18 @@ export function CreateTeam() {
           Create your team and add members to collaborate effectively
         </h1>
       </div>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <img
+          style={{ width: "100px", margin: "10px" }}
+          alt="Xam_IMG"
+          src="img/xam.PNG"
+        />
         <input
           style={{
             backgroundColor: "#FFE8B6",
@@ -50,7 +75,7 @@ export function CreateTeam() {
             border: "none",
             width: "400px",
             height: "30px",
-            margin: "10px",
+            margin: "5px",
           }}
           placeholder="Team Name"
           onChange={onTeam}
@@ -59,8 +84,9 @@ export function CreateTeam() {
         <Button
           style={{
             backgroundColor: "#F4900C",
+            width: "400px",
             color: "white",
-            margin: "40px 10px",
+            margin: "10px 10px",
           }}
           onClick={onApply}
         >

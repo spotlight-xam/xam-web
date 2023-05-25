@@ -39,14 +39,12 @@ export function Join() {
     };
 
     try {
-      const res = axios.post<postJoinRes>("localhost:8080/signup", newUser);
-      return res;
+      axios.post<postJoinRes>("localhost:8080/signup", newUser);
+      navigate(`/login`);
     } catch (error) {
       alert("회원가입에 실패했습니다.");
       console.log(error);
     }
-
-    navigate("/login");
   };
 
   return (
@@ -70,7 +68,7 @@ export function Join() {
         <img
           style={{ width: "100px", margin: "10px" }}
           alt="Xam_IMG"
-          src="img/xam.png"
+          src="img/xam.PNG"
         />
         <input
           style={{

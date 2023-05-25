@@ -26,7 +26,7 @@ export function Login() {
       password: password,
     };
     const token = axios.post("localhost:8080/login", data);
-    navigate("./home");
+    navigate(`./home`);
   };
 
   return (

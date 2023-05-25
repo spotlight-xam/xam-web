@@ -1,35 +1,28 @@
 import { Dialog } from "./screens/Chat/Dialog";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  useSearchParams,
-} from "react-router-dom";
-import { CreateTeam } from "./screens/Team/CreateTeam";
-import { Join, Login } from "./screens";
-
-const User = {
-  //유저 객체 - 이메일, 비밀번호
-  ID: String,
-  Password: String,
-};
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import * as Screen from "./screens";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/home",
-      element: <Dialog />,
+      element: <Screen.Dialog />,
     },
     {
       path: "/join",
-      element: <Join />,
+      element: <Screen.Join />,
     },
     {
       path: "/login",
-      element: <Login />,
+      element: <Screen.Login />,
     },
     {
       path: "/createteam",
-      element: <CreateTeam />,
+      element: <Screen.CreateTeam />,
+    },
+    {
+      path: "/feed",
+      element: <Screen.Feed />,
     },
   ]);
 
