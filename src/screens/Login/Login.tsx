@@ -9,7 +9,7 @@ interface postLoginReq {
 }
 
 interface postLoginRes {
-  email: String;
+  username: String;
   authToken: String;
 }
 
@@ -32,7 +32,13 @@ export function Login() {
     };
     try {
       const res = await axios.post<postLoginRes>("localhost:8080/login", data);
-      localStorage.setItem(username, String(res.data.authToken));
+
+      const userData = {
+        username: res.data.username,
+        authToken: res.data.authToken,
+      };
+
+      localStorage.setItem("token", String(userData));
     } catch {
       alert("로그인에 실패하였습니다.");
     }

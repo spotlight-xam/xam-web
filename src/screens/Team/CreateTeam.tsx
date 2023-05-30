@@ -11,6 +11,20 @@ interface postCreateTeamRes {
   teamId: Number;
 }
 
+interface postCreateRoomReq {
+  roomName: String;
+  userNames: String[];
+}
+
+interface postCreateRoomRes {
+  roomId: Number;
+}
+
+interface postLoginRes {
+  username: String;
+  authToken: String;
+}
+
 export function CreateTeam() {
   const [team, setTeam] = useState("");
   const navigate = useNavigate();
@@ -19,15 +33,30 @@ export function CreateTeam() {
     setTeam(event.target.value);
   };
 
-  const onApply = () => {
+  //초기 채널 구성
+  const userDataString: string | null = localStorage.getItem("token");
+  const userData: postLoginRes | null = userDataString
+    ? JSON.parse(userDataString)
+    : null;
+
+  const initialRoom: postCreateRoomReq = {
+    roomName: "자유소통",
+    userNames: userData ? [userData.username] : [],
+  };
+
+  const onApply = async () => {
     const newTeam: postCreateTeamReq = {
       teamName: team,
     };
 
     try {
-      const teamId = axios.post<postCreateTeamRes>(
+      const teamId = await axios.post<postCreateTeamRes>(
         "localhost:8080/team/create",
         newTeam
+      );
+      await axios.post<postCreateRoomRes>(
+        "localhost:8080/team/chat/room/create",
+        initialRoom
       );
       navigate(`/chat/${teamId}`);
     } catch (error) {
