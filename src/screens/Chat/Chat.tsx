@@ -14,7 +14,7 @@ export function Chat() {
   const [data, setData] = useState<Data[]>([]);
 
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
+    <div style={{ height: "100%", width: "100%" }}>
       <div
         style={{
           display: "flex",

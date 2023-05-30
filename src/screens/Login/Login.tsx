@@ -1,11 +1,16 @@
 import { Button } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 interface postLoginReq {
   username: String;
   password: String;
+}
+
+interface postLoginRes {
+  email: String;
+  authToken: String;
 }
 
 export function Login() {
@@ -20,13 +25,18 @@ export function Login() {
     setPassword(event.target.value);
   };
 
-  const onLogin = () => {
+  const onLogin = async () => {
     const data: postLoginReq = {
       username: username,
       password: password,
     };
-    const token = axios.post("localhost:8080/login", data);
-    navigate(`./home`);
+    try {
+      const res = await axios.post<postLoginRes>("localhost:8080/login", data);
+      localStorage.setItem(username, String(res.data.authToken));
+    } catch {
+      alert("로그인에 실패하였습니다.");
+    }
+    navigate(`/home`);
   };
 
   return (
@@ -92,7 +102,7 @@ export function Login() {
           }}
           onClick={onLogin}
         >
-          Join
+          Login
         </Button>
       </div>
     </div>

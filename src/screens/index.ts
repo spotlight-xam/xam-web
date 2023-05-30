@@ -5,3 +5,4 @@ export * from "./Team/CreateTeam";
 export * from "./Post/Post";
 export * from "./Feed/Feed";
 export * from "./Chat/Dialog";
+export * from "./Home/Home";

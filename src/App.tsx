@@ -1,4 +1,3 @@
-import { Dialog } from "./screens/Chat/Dialog";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import * as Screen from "./screens";
 
@@ -6,7 +5,7 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/home",
-      element: <Screen.Dialog />,
+      element: <Screen.Home />,
     },
     {
       path: "/join",

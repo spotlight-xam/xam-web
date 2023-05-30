@@ -23,7 +23,7 @@ export function Dialog() {
         display: "flex",
         flexDirection: "column",
         width: "100%",
-        height: "91.7%",
+        height: "100%",
       }}
     >
       <Chat></Chat>
