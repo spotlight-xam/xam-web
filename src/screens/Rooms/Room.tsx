@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-interface getRoomlistReq {
-  username: string;
+interface MyRoom {
+  id: number;
+  roomName: string;
 }
 
-interface getRoomlistReq {
-  roomList: string[];
+interface getRoomlistRes {
+  roomList: MyRoom[];
 }
 
 interface postCreateRoomReq {
@@ -18,53 +19,49 @@ interface postCreateRoomRes {
   roomId: number;
 }
 
-export function Room() {
-  const [roomlist, setRoomlist] = useState<string[]>([]);
+interface RoomProps {
+  teamData: number;
+}
+export function Room({ teamData }: RoomProps) {
+  const [roomlist, setRoomlist] = useState<getRoomlistRes>({
+    roomList: [],
+  });
   const getRoomlist = async () => {
     try {
-      const res = await axios.get<getRoomlistReq>(
-        "localhost:8080/team/{teamId}/room"
+      const res = await axios.get<getRoomlistRes>(
+        "localhost:8080/team/{teamId}/room",
+        {
+          headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
       );
-      setRoomlist(res.data.roomList);
+      setRoomlist(res.data);
     } catch (error) {
-      alert("데이터를 불러오는데 실패하였습니다.");
+      alert("데이터를 불러오는데 실패하였습니다. 더미 데이터로 진행합니다.");
+      //더미 데이터
+      const exam: getRoomlistRes = {
+        roomList: [
+          {
+            id: 3,
+            roomName: "기획행정부",
+          },
+          {
+            id: 5,
+            roomName: "사무행정부",
+          },
+        ],
+      };
+      setRoomlist(exam);
     }
   };
+
+  const chooseRoom = (room: number) => {};
   useEffect(() => {
     getRoomlist();
   }, []);
   return (
     <div style={{ width: "100%" }}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          color: "white",
-          width: "100%",
-          height: "50px",
-          borderBottom: "solid 1px gray",
-        }}
-      >
-        기획행정부
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          color: "white",
-          width: "100%",
-          height: "50px",
-          borderBottom: "solid 1px gray",
-        }}
-      >
-        사무행정부
-      </div>
       <div>
-        {roomlist.map((room) => {
+        {roomlist.roomList.map((room) => {
           return (
             <div
               style={{
@@ -77,8 +74,11 @@ export function Room() {
                 height: "50px",
                 borderBottom: "solid 1px gray",
               }}
+              onClick={() => {
+                chooseRoom(room.id);
+              }}
             >
-              {room}
+              {room.roomName}
             </div>
           );
         })}

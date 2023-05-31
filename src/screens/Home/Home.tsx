@@ -1,10 +1,13 @@
-import { Button } from "antd";
+import { useState } from "react";
 import { Dialog } from "../Chat/Dialog";
 import { Room } from "../Rooms/Room";
-import { useState } from "react";
 import { Team } from "../Team/Team";
 
 export function Home() {
+  const [teamId, setTeamId] = useState(0);
+  const onChangeTeam = (teamId: number) => {
+    setTeamId(teamId);
+  };
   return (
     <body
       style={{
@@ -14,7 +17,7 @@ export function Home() {
         height: "100vh",
       }}
     >
-      <Team></Team>
+      <Team onTeamEvent={onChangeTeam}></Team>
       <div
         style={{
           display: "flex",
@@ -62,7 +65,7 @@ export function Home() {
             +
           </button>
         </div>
-        <Room></Room>
+        <Room teamData={teamId}></Room>
       </div>
       <div
         style={{
