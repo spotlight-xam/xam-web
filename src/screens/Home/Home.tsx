@@ -1,32 +1,10 @@
 import { Button } from "antd";
 import { Dialog } from "../Chat/Dialog";
-import { PlusOutlined } from "@ant-design/icons";
+import { Room } from "../Rooms/Room";
 import { useState } from "react";
-import axios from "axios";
+import { Team } from "../Team/Team";
 
-interface useChannelReq {
-  //임시 채널 Request
-  channelType: String;
-  channelName: String;
-  allowPrivacy: boolean;
-}
-
-interface useChannelRes {
-  //임시 채널 Response
-  Chat: String[];
-  Post: String[];
-  Voice: String[];
-}
 export function Home() {
-  const [channel, setChannel] = useState([]);
-
-  const channelPopup = (e) => {
-    addChannel();
-  };
-
-  const addChannel = () => {
-    const channel = axios.get<useChannelRes>("URL");
-  };
   return (
     <body
       style={{
@@ -36,36 +14,7 @@ export function Home() {
         height: "100vh",
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          width: "80px",
-          height: "100%",
-          backgroundColor: "#827979",
-        }}
-      >
-        <div
-          style={{
-            width: "50px",
-            height: "50px",
-            borderRadius: "10px",
-            backgroundColor: "white",
-            margin: "5px 0",
-          }}
-        ></div>
-        <br></br>
-        <div
-          style={{
-            width: "50px",
-            height: "50px",
-            borderRadius: "10px",
-            backgroundColor: "white",
-            margin: "5px 0",
-          }}
-        ></div>
-      </div>
+      <Team></Team>
       <div
         style={{
           display: "flex",
@@ -84,22 +33,36 @@ export function Home() {
             color: "white",
             height: "50px",
             width: "100%",
-            border: "solid 1px gray",
           }}
         >
           멋쟁이 사자처럼
         </div>
-        <Button
+        <div
           style={{
-            width: "50px",
-            height: "50px",
-            borderRadius: "10px",
-            backgroundColor: "white",
-            margin: "5px 0",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            height: "30px",
+            margin: "0 10px",
+            border: "solid 1px gray",
           }}
-          icon={<PlusOutlined />}
-          onClick={channelPopup}
-        ></Button>
+        >
+          <div style={{ color: "white", margin: "10px" }}>채널</div>
+          <button
+            style={{
+              width: "20px",
+              height: "20px",
+              padding: "0px",
+              margin: "0 10px",
+              backgroundColor: "none",
+            }}
+          >
+            +
+          </button>
+        </div>
+        <Room></Room>
       </div>
       <div
         style={{
@@ -109,18 +72,6 @@ export function Home() {
           height: "100%",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            width: "100%",
-            height: "50px",
-            backgroundColor: "#D9D9D9",
-          }}
-        >
-          채널 이름
-        </div>
-
         <div
           style={{
             display: "flex",

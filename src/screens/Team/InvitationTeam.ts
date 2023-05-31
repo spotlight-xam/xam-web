@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 
 export function InvitationTeam() {
   const navigate = useNavigate();
-  const storedToken = localStorage.getItem("token");
+  const userData = localStorage.getItem("token");
 
-  if (storedToken !== null) navigate(`/home`);
+  if (userData !== null) navigate(`/home`);
   else navigate(`/login`);
 }
