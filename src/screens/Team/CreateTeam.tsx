@@ -4,11 +4,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 interface postCreateTeamReq {
-  teamName: String;
+  teamName: string;
 }
 
 interface postCreateTeamRes {
-  teamId: Number;
+  teamId: number;
 }
 
 interface postCreateRoomReq {
@@ -33,17 +33,19 @@ export function CreateTeam() {
     setTeam(event.target.value);
   };
 
-  //초기 채널 구성
+  //유저 정보 불러오기
   const userDataString: string | null = localStorage.getItem("token");
   const userData: postLoginRes | null = userDataString
     ? JSON.parse(userDataString)
     : null;
 
+  //초기 채널 구성
   const initialRoom: postCreateRoomReq = {
     roomName: "자유소통",
     userNames: userData ? [userData.username] : [],
   };
 
+  //팀 생성하기
   const onApply = async () => {
     const newTeam: postCreateTeamReq = {
       teamName: team,

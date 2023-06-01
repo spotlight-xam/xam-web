@@ -19,10 +19,13 @@ interface postCreateRoomRes {
   roomId: number;
 }
 
-interface RoomProps {
+export function Room({
+  onRoomEvent,
+  teamData,
+}: {
+  onRoomEvent: (teamData: number) => void;
   teamData: number;
-}
-export function Room({ teamData }: RoomProps) {
+}) {
   const [roomlist, setRoomlist] = useState<getRoomlistRes>({
     roomList: [],
   });
@@ -54,12 +57,42 @@ export function Room({ teamData }: RoomProps) {
     }
   };
 
-  const chooseRoom = (room: number) => {};
+  const chooseRoom = (room: MyRoom) => {
+    //채널이 선택되었을 때
+    const roomData = room.id;
+    const roomName = room.roomName;
+    alert(`${roomName}` + " 채널로 변경되었습니다.");
+    onRoomEvent(roomData);
+  };
   useEffect(() => {
     getRoomlist();
   }, []);
   return (
     <div style={{ width: "100%" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "100%",
+          height: "30px",
+          border: "solid 1px gray",
+        }}
+      >
+        <div style={{ color: "white", margin: "10px" }}>채널</div>
+        <button
+          style={{
+            width: "20px",
+            height: "20px",
+            padding: "0px",
+            margin: "0 10px",
+            backgroundColor: "none",
+          }}
+        >
+          +
+        </button>
+      </div>
       <div>
         {roomlist.roomList.map((room) => {
           return (
@@ -73,9 +106,10 @@ export function Room({ teamData }: RoomProps) {
                 width: "100%",
                 height: "50px",
                 borderBottom: "solid 1px gray",
+                cursor: "pointer",
               }}
               onClick={() => {
-                chooseRoom(room.id);
+                chooseRoom(room);
               }}
             >
               {room.roomName}

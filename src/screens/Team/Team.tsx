@@ -93,7 +93,9 @@ export function Team({
               cursor: "pointer",
             }}
             onClick={() => chooseTeam(team)}
-          ></div>
+          >
+            {team.teamName}
+          </div>
         );
       })}
     </div>

@@ -1,22 +1,44 @@
 import { PlusOutlined, SendOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { Chat } from "./Chat";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-export interface Data {
-  id: String;
-  date: String;
-  name: String;
-  content: String;
+interface getMessageReq{
+  teamId: number; // 팀 아이디
+  roomId: number; //채널 아이디
 }
 
-export function Dialog() {
+interface getMessageRes {
+  id: number; // 방 번호
+  senderId: number // 채팅을 보낸 사람
+  message: string //메세지
+  time:  string // 채팅 발송 시간
+}
+
+export function Dialog({roomData}: {roomData:number}) {
   //입력
-  const [chat, setChat] = useState("");
+  const [message, setMessage] = useState('');
+  const [chatlist, setChatlist] = useState<getMessageRes>();
 
-  const onChat = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setChat(event.target.value);
+  const getChatlist = async () =>{
+    try{
+      const res = await axios.get<getMessageRes>(
+        "localhost:8080/team/{teamId}/room",
+        {
+          headers: { authorization: `Bearer ${localStorage.getItem("token"), roomData}` },
+        }
+      );
+      setChatlist(res.data);
+    } 
+  }
 
+  const postChat = () => {
+
+  }
+  useEffect(()=>{
+    getChatlist();
+  },[]);
   return (
     <div
       style={{
@@ -74,8 +96,8 @@ export function Dialog() {
               outline: "none",
               fontSize: "large",
             }}
-            value={chat}
-            onChange={onChat}
+            value={message}
+            onChange={onMessage}
             placeholder="메시지를 입력하세요"
             type="text"
           />

@@ -5,8 +5,12 @@ import { Team } from "../Team/Team";
 
 export function Home() {
   const [teamId, setTeamId] = useState(0);
+  const [roomId, setRoomId] = useState(0);
   const onChangeTeam = (teamId: number) => {
     setTeamId(teamId);
+  };
+  const onRoomChange = (roomId: number) => {
+    setRoomId(roomId);
   };
   return (
     <body
@@ -40,32 +44,11 @@ export function Home() {
         >
           멋쟁이 사자처럼
         </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-            height: "30px",
-            margin: "0 10px",
-            border: "solid 1px gray",
-          }}
-        >
-          <div style={{ color: "white", margin: "10px" }}>채널</div>
-          <button
-            style={{
-              width: "20px",
-              height: "20px",
-              padding: "0px",
-              margin: "0 10px",
-              backgroundColor: "none",
-            }}
-          >
-            +
-          </button>
-        </div>
-        <Room teamData={teamId}></Room>
+
+        <Room
+          onRoomEvent={(teamData: number) => onRoomChange(teamData)}
+          teamData={teamId}
+        ></Room>
       </div>
       <div
         style={{
@@ -83,7 +66,7 @@ export function Home() {
             width: "100%",
           }}
         >
-          <Dialog></Dialog>
+          <Dialog roomData={roomId}></Dialog>
         </div>
         <div
           style={{
