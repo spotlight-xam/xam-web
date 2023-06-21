@@ -11,8 +11,12 @@ body {
 /* Basic editor styles */
 .ProseMirror {
   outline: none;
-  width: 100%;
+  width: calc(100% - 32px);
   height: 100%;
+  padding-top: 1px;
+  margin-top: -1px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 .ProseMirror > * + * {
   margin-top: 0.75em;

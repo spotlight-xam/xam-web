@@ -16,6 +16,7 @@
     "antd": "^5.5.0",
     "axios": "^1.4.0",
     "dayjs": "^1.11.7",
+    "eventemitter3": "^5.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-infinite-scroll-component": "^6.1.0",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@ant-design/icons": "^5.0.1",
+    "@types/node": "^20.3.1",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@types/styled-components": "^5.1.26",

@@ -1,7 +1,8 @@
 import { PlusOutlined, SendOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { Chat } from "./Chat";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSocketInit } from "../../socket";
 
 export interface Data {
   id: String;
@@ -16,6 +17,8 @@ export function Dialog() {
 
   const onChat = (event: React.ChangeEvent<HTMLInputElement>) =>
     setChat(event.target.value);
+
+  useSocketInit();
 
   return (
     <div

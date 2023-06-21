@@ -43,7 +43,14 @@ export function WriteResume({ postList }: WriteResumeProps) {
 
   return (
     <div style={{ display: "flex", height: "100%" }}>
-      <div style={{ display: "flex", flex: 1, height: "100%" }}>
+      <div
+        style={{
+          display: "flex",
+          flex: 1,
+          height: "100%",
+          borderRight: "2px solid #000",
+        }}
+      >
         <ReactFlowOfWriteResume postList={postList} />
       </div>
       <div style={{ display: "flex", flex: 1, height: "100%" }}>

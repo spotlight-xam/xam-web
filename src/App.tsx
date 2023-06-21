@@ -10,7 +10,7 @@ function App() {
 
   const router = createBrowserRouter([
     {
-      path: "/home",
+      path: "/",
       element: <Screen.Dialog />,
     },
     {
@@ -47,6 +47,10 @@ function App() {
           }}
         />
       ),
+    },
+    {
+      path: "/resumes",
+      element: <Screen.WriteResume postList={postList} />,
     },
     {
       path: "/resume/write",

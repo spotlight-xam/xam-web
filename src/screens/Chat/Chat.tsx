@@ -1,6 +1,6 @@
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export interface Data {
   date: String;
