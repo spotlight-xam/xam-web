@@ -1,3 +1,4 @@
+import { PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -15,9 +16,18 @@ export function Team({
 }: {
   onTeamEvent: (teamData: number) => void;
 }) {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [teamlist, setTeamlist] = useState<getMyTeamRes>({
     myTeamList: [],
   });
+
+  const handleButtonClick = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handlePopupClose = () => {
+    setIsPopupOpen(false);
+  };
 
   const getTeamlist = async () => {
     try {
@@ -31,9 +41,8 @@ export function Team({
       );
       setTeamlist(res.data);
     } catch {
-      alert("데이터를 불러오는데 실패하였습니다. 더미 데이터로 진행합니다.");
-      //더미 데이터
       const exam: getMyTeamRes = {
+        //더미 데이터
         myTeamList: [
           {
             id: 3,
@@ -58,6 +67,7 @@ export function Team({
   useEffect(() => {
     getTeamlist();
   }, []);
+
   return (
     <div
       style={{
@@ -98,6 +108,27 @@ export function Team({
           </div>
         );
       })}
+      <div
+        style={{
+          width: "50px",
+          height: "50px",
+          borderRadius: "10px",
+          backgroundColor: "white",
+          margin: "5px 0",
+          cursor: "pointer",
+        }}
+        onClick={handleButtonClick}
+      >
+        <PlusOutlined />
+      </div>
+      {isPopupOpen && (
+        <div className="popup">
+          <div>
+            <h2>팀 만들기</h2>
+            <button onClick={handlePopupClose}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

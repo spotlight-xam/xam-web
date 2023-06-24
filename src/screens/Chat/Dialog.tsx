@@ -4,41 +4,55 @@ import { Chat } from "./Chat";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-interface getMessageReq{
+interface getMessageReq {
   teamId: number; // 팀 아이디
   roomId: number; //채널 아이디
 }
 
 interface getMessageRes {
   id: number; // 방 번호
-  senderId: number // 채팅을 보낸 사람
-  message: string //메세지
-  time:  string // 채팅 발송 시간
+  senderId: number; // 채팅을 보낸 사람
+  message: string; //메세지
+  time: string; // 채팅 발송 시간
 }
 
-export function Dialog({roomData}: {roomData:number}) {
+export function Dialog({ roomData }: { roomData: number }) {
   //입력
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [chatlist, setChatlist] = useState<getMessageRes>();
 
-  const getChatlist = async () =>{
-    try{
+  const onMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage(event.target.value);
+  };
+
+  const getChatlist = async () => {
+    try {
       const res = await axios.get<getMessageRes>(
         "localhost:8080/team/{teamId}/room",
         {
-          headers: { authorization: `Bearer ${localStorage.getItem("token"), roomData}` },
+          headers: {
+            authorization: `Bearer ${
+              (localStorage.getItem("token"), roomData)
+            }`,
+          },
         }
       );
       setChatlist(res.data);
-    } 
-  }
+    } catch (error) {
+      alert("데이터를 불러오는데 실패하였습니다. 더미 데이터로 진행합니다.");
+      //더미 데이터 설정 필요
+    }
+  };
 
   const postChat = () => {
-
-  }
-  useEffect(()=>{
+    try {
+    } catch (error) {
+      alert("전송에 실패하였습니다.");
+    }
+  };
+  useEffect(() => {
     getChatlist();
-  },[]);
+  }, []);
   return (
     <div
       style={{

@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const mainColor = "#F4900C";
+
 interface postJoinReq {
   //access token을 첨부해서 보냄
   username: String;
@@ -32,6 +34,10 @@ export function Join() {
   };
 
   const onJoin = async () => {
+    //관리자
+    if (username === "관리자") {
+      navigate(`/login`);
+    }
     const newUser: postJoinReq = {
       username: username,
       email: email,
@@ -114,7 +120,7 @@ export function Join() {
         />
         <Button
           style={{
-            backgroundColor: "#F4900C",
+            backgroundColor: mainColor,
             borderRadius: "5px",
             color: "white",
             height: "40px",

@@ -1,17 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog } from "../Chat/Dialog";
 import { Room } from "../Rooms/Room";
 import { Team } from "../Team/Team";
 
 export function Home() {
+  const [authToken, setAuthToken] = useState("");
   const [teamId, setTeamId] = useState(0);
   const [roomId, setRoomId] = useState(0);
+
+  const getToken = () => {
+    const token = localStorage.getItem("accessToken");
+    if (token !== null) {
+      setAuthToken(token);
+    }
+  };
   const onChangeTeam = (teamId: number) => {
     setTeamId(teamId);
   };
   const onRoomChange = (roomId: number) => {
     setRoomId(roomId);
   };
+
+  useEffect(() => {
+    getToken();
+  }, []);
+
   return (
     <body
       style={{

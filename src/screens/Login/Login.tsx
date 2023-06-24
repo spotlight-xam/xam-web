@@ -4,44 +4,53 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 interface postLoginReq {
-  username: String;
+  email: String;
   password: String;
 }
 
 interface postLoginRes {
-  username: String;
-  authToken: String;
+  accessToken: String;
+  refreshToken: String;
 }
 
 export function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const onUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
+  const onEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
   };
   const onPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
 
   const onLogin = async () => {
+    //관리자
+    if (email === "admin") {
+      localStorage.setItem("accessToken", "admin");
+      return navigate(`/home`);
+    }
+
     const data: postLoginReq = {
-      username: username,
+      email: email,
       password: password,
     };
+
     try {
       const res = await axios.post<postLoginRes>("localhost:8080/login", data);
 
-      const userData = {
-        username: res.data.username,
-        authToken: res.data.authToken,
-      };
+      //Access token
+      const accessToken = res.data.accessToken;
+      localStorage.setItem("accessToken", String(accessToken));
 
-      localStorage.setItem("token", String(userData));
+      //Refresh token
+      const refreshToken = res.data.refreshToken;
+      document.cookie = `refreshToken=${refreshToken}; path=/; secure; HttpOnly;`;
     } catch {
-      alert("로그인에 실패하였습니다.");
+      return alert("로그인에 실패하였습니다.");
     }
+
     navigate(`/home`);
   };
 
@@ -79,8 +88,8 @@ export function Login() {
             padding: "5px",
           }}
           placeholder="User Email"
-          onChange={onUsername}
-          value={username}
+          onChange={onEmail}
+          value={email}
         />
         <input
           style={{

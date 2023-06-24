@@ -39,7 +39,6 @@ export function Room({
       );
       setRoomlist(res.data);
     } catch (error) {
-      alert("데이터를 불러오는데 실패하였습니다. 더미 데이터로 진행합니다.");
       //더미 데이터
       const exam: getRoomlistRes = {
         roomList: [
@@ -64,9 +63,11 @@ export function Room({
     alert(`${roomName}` + " 채널로 변경되었습니다.");
     onRoomEvent(roomData);
   };
+
   useEffect(() => {
     getRoomlist();
   }, []);
+
   return (
     <div style={{ width: "100%" }}>
       <div

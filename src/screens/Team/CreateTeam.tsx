@@ -25,6 +25,8 @@ interface postLoginRes {
   authToken: String;
 }
 
+const mainColor = "#F4900C";
+
 export function CreateTeam() {
   const [team, setTeam] = useState("");
   const navigate = useNavigate();
@@ -79,13 +81,32 @@ export function CreateTeam() {
       <div
         style={{
           display: "flex",
-          flexDirection: "row",
-          margin: "100px",
+          flexDirection: "column",
+          alignItems: "center",
+          margin: "0 100px",
         }}
       >
-        <h1 style={{ font: "Inter", width: "350px" }}>
-          Create your team and add members to collaborate effectively
-        </h1>
+        <img
+          style={{ height: "150px", width: "150px", margin: "20px" }}
+          alt="Xam_IMG"
+          src="img/xam.PNG"
+        />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            fontWeight: "bold",
+            fontSize: "40px",
+          }}
+        >
+          <div>
+            Create your <span style={{ color: mainColor }}>team</span> and
+          </div>
+          <div>
+            add <span style={{ color: mainColor }}>members</span> to
+          </div>
+          <div>collaborate effectively</div>
+        </div>
       </div>
       <div
         style={{
