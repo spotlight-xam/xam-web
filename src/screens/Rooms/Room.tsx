@@ -2,11 +2,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 interface MyRoom {
-  id: number;
+  roomId: number;
   roomName: string;
 }
 
-interface getRoomlistRes {
+interface getMyRoomRes {
   roomList: MyRoom[];
 }
 
@@ -17,37 +17,43 @@ interface postCreateRoomReq {
 
 interface postCreateRoomRes {
   roomId: number;
+  roomName: string;
 }
 
 export function Room({
+  createRoom,
   onRoomEvent,
-  teamData,
+  teamId,
 }: {
-  onRoomEvent: (teamData: number) => void;
-  teamData: number;
+  createRoom: () => void;
+  onRoomEvent: (teamId: number) => void;
+  teamId: number;
 }) {
-  const [roomlist, setRoomlist] = useState<getRoomlistRes>({
+  const [roomlist, setRoomlist] = useState<getMyRoomRes>({
     roomList: [],
   });
+
   const getRoomlist = async () => {
     try {
-      const res = await axios.get<getRoomlistRes>(
-        "localhost:8080/team/{teamId}/room",
+      const res = await axios.get<getMyRoomRes>(
+        `localhost:8080/team/${teamId}/room`,
         {
-          headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
         }
       );
       setRoomlist(res.data);
     } catch (error) {
       //더미 데이터
-      const exam: getRoomlistRes = {
+      const exam: getMyRoomRes = {
         roomList: [
           {
-            id: 3,
+            roomId: 3,
             roomName: "기획행정부",
           },
           {
-            id: 5,
+            roomId: 5,
             roomName: "사무행정부",
           },
         ],
@@ -58,7 +64,7 @@ export function Room({
 
   const chooseRoom = (room: MyRoom) => {
     //채널이 선택되었을 때
-    const roomData = room.id;
+    const roomData = room.roomId;
     const roomName = room.roomName;
     alert(`${roomName}` + " 채널로 변경되었습니다.");
     onRoomEvent(roomData);
@@ -78,18 +84,21 @@ export function Room({
           alignItems: "center",
           width: "100%",
           height: "30px",
-          border: "solid 1px gray",
+          borderBottom: "solid 1px gray",
         }}
       >
         <div style={{ color: "white", margin: "10px" }}>채널</div>
         <button
           style={{
+            cursor: "pointer",
             width: "20px",
             height: "20px",
             padding: "0px",
             margin: "0 10px",
-            backgroundColor: "none",
+            borderRadius: "5px",
+            border: "solid 1px gray",
           }}
+          onClick={createRoom}
         >
           +
         </button>

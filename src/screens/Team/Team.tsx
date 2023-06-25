@@ -26,7 +26,7 @@ export function Team({
         "localhost:8080/team/{memberId}/myTeam",
         {
           headers: {
-            Authorization: "authToken",
+            authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
         }
       );

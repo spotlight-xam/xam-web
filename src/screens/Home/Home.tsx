@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Dialog } from "../Chat/Dialog";
 import { Room } from "../Rooms/Room";
 import { Team } from "../Team/Team";
+import Modal from "react-modal";
 
 export function Home() {
   const [authToken, setAuthToken] = useState("");
   const [teamId, setTeamId] = useState(0);
   const [roomId, setRoomId] = useState(0);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const getToken = () => {
     const token = localStorage.getItem("accessToken");
@@ -19,6 +21,10 @@ export function Home() {
   };
   const onRoomChange = (roomId: number) => {
     setRoomId(roomId);
+  };
+
+  const handleButtonClick = () => {
+    setModalIsOpen(true);
   };
 
   useEffect(() => {
@@ -40,7 +46,7 @@ export function Home() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          width: "250px",
+          width: "300px",
           height: "100%",
           backgroundColor: "#aba2a2",
         }}
@@ -51,16 +57,18 @@ export function Home() {
             justifyContent: "center",
             alignItems: "center",
             color: "white",
-            height: "50px",
+            height: "60px",
             width: "100%",
+            borderBottom: "solid 1px gray",
           }}
         >
           멋쟁이 사자처럼
         </div>
 
         <Room
-          onRoomEvent={(teamData: number) => onRoomChange(teamData)}
-          teamData={teamId}
+          createRoom={handleButtonClick}
+          onRoomEvent={(teamId: number) => onRoomChange(teamId)}
+          teamId={teamId}
         ></Room>
       </div>
       <div
@@ -71,6 +79,12 @@ export function Home() {
           height: "100%",
         }}
       >
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={() => setModalIsOpen(false)}
+        >
+          This is Modal content
+        </Modal>
         <div
           style={{
             display: "flex",
