@@ -1,72 +1,111 @@
-import { Button } from "antd";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import { Button, message, Upload } from "antd";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import type { UploadChangeParam } from "antd/es/upload";
+import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
+
 interface postCreateTeamReq {
   teamName: string;
+  profileImage?: String;
 }
 
 interface postCreateTeamRes {
   teamId: number;
+  teamName: string;
+  profileImage: string;
 }
 
-interface postCreateRoomReq {
-  roomName: String;
-  userNames: String[];
-}
+const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result as string));
+  reader.readAsDataURL(img);
+};
 
-interface postCreateRoomRes {
-  roomId: Number;
-}
-
-interface postLoginRes {
-  username: String;
-  authToken: String;
-}
-
-const mainColor = "#F4900C";
+const beforeUpload = (file: RcFile) => {
+  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+  if (!isJpgOrPng) {
+    message.error("You can only upload JPG/PNG file!");
+  }
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isLt2M) {
+    message.error("Image must smaller than 2MB!");
+  }
+  return isJpgOrPng && isLt2M;
+};
 
 export function CreateTeam() {
+  const [authToken, setAuthToken] = useState("");
   const [team, setTeam] = useState("");
   const navigate = useNavigate();
+  const mainColor = "#F4900C";
 
   const onTeam = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTeam(event.target.value);
   };
 
   //유저 정보 불러오기
-  const userDataString: string | null = localStorage.getItem("token");
-  const userData: postLoginRes | null = userDataString
-    ? JSON.parse(userDataString)
-    : null;
-
-  //초기 채널 구성
-  const initialRoom: postCreateRoomReq = {
-    roomName: "자유소통",
-    userNames: userData ? [userData.username] : [],
+  const getToken = () => {
+    const token = localStorage.getItem("accessToken");
+    if (token !== null) {
+      setAuthToken(token);
+    }
   };
 
   //팀 생성하기
   const onApply = async () => {
     const newTeam: postCreateTeamReq = {
       teamName: team,
+      profileImage: imageUrl,
     };
 
     try {
-      const teamId = await axios.post<postCreateTeamRes>(
+      const req = await axios.post<postCreateTeamRes>(
         "localhost:8080/team/create",
-        newTeam
+        {
+          headers: {
+            Authorization: authToken,
+          },
+          body: {
+            newTeam,
+          },
+        }
       );
-      await axios.post<postCreateRoomRes>(
-        "localhost:8080/team/chat/room/create",
-        initialRoom
-      );
-      navigate(`/chat/${teamId}`);
+
+      navigate(`/home`);
     } catch (error) {
       alert("팀 생성에 실패하였습니다.");
+      navigate("/home");
     }
   };
+
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string>();
+
+  const handleChange: UploadProps["onChange"] = (
+    info: UploadChangeParam<UploadFile>
+  ) => {
+    if (info.file.status === "uploading") {
+      setLoading(true);
+      return;
+    }
+    if (info.file.status === "done") {
+      // Get this url from response in real world.
+      getBase64(info.file.originFileObj as RcFile, (url) => {
+        setLoading(false);
+        setImageUrl(url);
+      });
+    }
+  };
+
+  const uploadButton = (
+    <div>
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
 
   return (
     <div
@@ -83,7 +122,7 @@ export function CreateTeam() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          margin: "0 100px",
+          marginLeft: "180px",
         }}
       >
         <img
@@ -91,6 +130,7 @@ export function CreateTeam() {
           alt="Xam_IMG"
           src="img/xam.PNG"
         />
+
         <div
           style={{
             display: "flex",
@@ -112,33 +152,59 @@ export function CreateTeam() {
         style={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
+          margin: "100px",
         }}
       >
-        <img
-          style={{ width: "100px", margin: "10px" }}
-          alt="Xam_IMG"
-          src="img/xam.PNG"
-        />
-        <input
-          style={{
-            backgroundColor: "#FFE8B6",
-            borderRadius: "5px",
-            border: "none",
-            width: "400px",
-            height: "30px",
-            margin: "5px",
-          }}
-          placeholder="Team Name"
-          onChange={onTeam}
-          value={team}
-        />
+        <div
+          style={{ display: "flex", alignItems: "center", marginTop: "150px" }}
+        >
+          <div style={{ fontWeight: "bold", margin: "20px 25px" }}>
+            Team Profile
+          </div>
+          <Upload
+            name="avatar"
+            listType="picture-card"
+            className="avatar-uploader"
+            showUploadList={false}
+            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            beforeUpload={beforeUpload}
+            onChange={handleChange}
+          >
+            {imageUrl ? (
+              <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
+            ) : (
+              uploadButton
+            )}
+          </Upload>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ fontWeight: "bold", margin: "5px" }}>Team Name</div>
+          <input
+            style={{
+              backgroundColor: "#FFE8B6",
+              borderRadius: "5px",
+              border: "none",
+              width: "300px",
+              height: "30px",
+              margin: "20px",
+              padding: "5px",
+            }}
+            placeholder="Team Name"
+            onChange={onTeam}
+            value={team}
+          />
+        </div>
+
         <Button
           style={{
-            backgroundColor: "#F4900C",
+            display: "flex",
+            justifyContent: "center",
+            backgroundColor: mainColor,
             width: "400px",
+            height: "40px",
             color: "white",
-            margin: "10px 10px",
+            margin: "50px 0 0 10px",
           }}
           onClick={onApply}
         >
