@@ -82,6 +82,7 @@ export function Home() {
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={() => setModalIsOpen(false)}
+          style={{}}
         >
           This is Modal content
         </Modal>
@@ -92,9 +93,7 @@ export function Home() {
             height: "100%",
             width: "100%",
           }}
-        >
-          <Dialog roomData={roomId}></Dialog>
-        </div>
+        ></div>
         <div
           style={{
             display: "flex",

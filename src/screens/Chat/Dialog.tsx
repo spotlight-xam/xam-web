@@ -28,7 +28,7 @@ export function Dialog({ roomData }: { roomData: number }) {
   const getChatlist = async () => {
     try {
       const res = await axios.get<getMessageRes>(
-        "localhost:8080/team/{teamId}/room",
+        `localhost:8080/team/${roomData}/room`,
         {
           headers: {
             authorization: `Bearer ${
