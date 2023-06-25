@@ -1,10 +1,11 @@
 import { PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface MyTeam {
-  id: number;
-  teamName: string;
+  teamId: number;
+  profileImage: string;
 }
 
 interface getMyTeamRes {
@@ -16,18 +17,8 @@ export function Team({
 }: {
   onTeamEvent: (teamData: number) => void;
 }) {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [teamlist, setTeamlist] = useState<getMyTeamRes>({
-    myTeamList: [],
-  });
-
-  const handleButtonClick = () => {
-    setIsPopupOpen(true);
-  };
-
-  const handlePopupClose = () => {
-    setIsPopupOpen(false);
-  };
+  const [teamlist, setTeamlist] = useState<getMyTeamRes>({ myTeamList: [] });
+  const navigate = useNavigate();
 
   const getTeamlist = async () => {
     try {
@@ -45,23 +36,17 @@ export function Team({
         //더미 데이터
         myTeamList: [
           {
-            id: 3,
-            teamName: "LikeLion",
+            teamId: 3,
+            profileImage: "/img/likelion.png",
           },
           {
-            id: 5,
-            teamName: "spotLight",
+            teamId: 5,
+            profileImage: "/img/likelionSKU.png",
           },
         ],
       };
       setTeamlist(exam);
     }
-  };
-
-  const chooseTeam = (team: MyTeam) => {
-    //팀이 선택되었을 때
-    const teamData = team.id;
-    onTeamEvent(teamData);
   };
 
   useEffect(() => {
@@ -84,13 +69,15 @@ export function Team({
           width: "50px",
           height: "50px",
           borderRadius: "10px",
-          backgroundColor: "white",
           margin: "5px 0",
+          cursor: "pointer",
+          background: "url(/img/xam.PNG)",
+          backgroundSize: "cover",
         }}
-      >
-        My Page
-      </div>
-      <br></br>
+      ></div>
+      <div
+        style={{ border: "solid 1px black", width: "40px", margin: " 10px 0" }}
+      ></div>
       {teamlist.myTeamList.map((team: MyTeam) => {
         return (
           <div
@@ -98,18 +85,20 @@ export function Team({
               width: "50px",
               height: "50px",
               borderRadius: "10px",
-              backgroundColor: "white",
               margin: "5px 0",
               cursor: "pointer",
+              background: `url(${team.profileImage})`,
+              backgroundSize: "cover",
             }}
-            onClick={() => chooseTeam(team)}
-          >
-            {team.teamName}
-          </div>
+            onClick={() => onTeamEvent(team.teamId)}
+          ></div>
         );
       })}
       <div
         style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
           width: "50px",
           height: "50px",
           borderRadius: "10px",
@@ -117,18 +106,12 @@ export function Team({
           margin: "5px 0",
           cursor: "pointer",
         }}
-        onClick={handleButtonClick}
+        onClick={() => {
+          navigate("/createTeam");
+        }}
       >
         <PlusOutlined />
       </div>
-      {isPopupOpen && (
-        <div className="popup">
-          <div>
-            <h2>팀 만들기</h2>
-            <button onClick={handlePopupClose}>Close</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
