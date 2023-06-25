@@ -4,7 +4,7 @@ import * as Screen from "./screens";
 function App() {
   const router = createBrowserRouter([
     {
-      path: "/home",
+      path: "/",
       element: <Screen.Home />,
     },
     {
