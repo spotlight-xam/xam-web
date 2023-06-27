@@ -114,7 +114,7 @@ export function CreateTeam() {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        height: "100%",
       }}
     >
       <div

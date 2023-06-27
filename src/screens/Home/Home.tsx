@@ -23,10 +23,6 @@ export function Home() {
     setRoomId(roomId);
   };
 
-  const handleButtonClick = () => {
-    setModalIsOpen(true);
-  };
-
   useEffect(() => {
     getToken();
   }, []);
@@ -66,7 +62,6 @@ export function Home() {
         </div>
 
         <Room
-          createRoom={handleButtonClick}
           onRoomEvent={(teamId: number) => onRoomChange(teamId)}
           teamId={teamId}
         ></Room>

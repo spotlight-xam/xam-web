@@ -1,7 +1,10 @@
-import { PlusOutlined } from "@ant-design/icons";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+import { Modal } from 'antd';
+import { PlusOutlined } from "@ant-design/icons";
+import { CreateTeam } from "./CreateTeam";
 
 interface MyTeam {
   teamId: number;
@@ -18,7 +21,10 @@ export function Team({
   onTeamEvent: (teamData: number) => void;
 }) {
   const [teamlist, setTeamlist] = useState<getMyTeamRes>({ myTeamList: [] });
-  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
 
   const getTeamlist = async () => {
     try {
@@ -106,12 +112,18 @@ export function Team({
           margin: "5px 0",
           cursor: "pointer",
         }}
-        onClick={() => {
-          navigate("/createTeam");
-        }}
+        onClick={showModal}
       >
         <PlusOutlined />
       </div>
+      <Modal 
+        title="Team Create"
+        centered
+        open={isModalOpen} 
+        width={1300}
+        >
+          <CreateTeam />
+        </Modal>
     </div>
   );
 }

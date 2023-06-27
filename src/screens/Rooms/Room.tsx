@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Modal } from 'antd';
 
 interface MyRoom {
   roomId: number;
@@ -21,11 +22,9 @@ interface postCreateRoomRes {
 }
 
 export function Room({
-  createRoom,
   onRoomEvent,
   teamId,
 }: {
-  createRoom: () => void;
   onRoomEvent: (teamId: number) => void;
   teamId: number;
 }) {
@@ -74,6 +73,18 @@ export function Room({
     getRoomlist();
   }, []);
 
+  //모달
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div style={{ width: "100%" }}>
       <div
@@ -98,10 +109,15 @@ export function Room({
             borderRadius: "5px",
             border: "solid 1px gray",
           }}
-          onClick={createRoom}
+          onClick={showModal}
         >
           +
         </button>
+        <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        </Modal>
       </div>
       <div>
         {roomlist.roomList.map((room) => {
