@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Modal } from 'antd';
+import { Modal } from "antd";
+import { CreateRoom } from "./CreateRoom";
 
 interface MyRoom {
   roomId: number;
@@ -11,16 +12,6 @@ interface getMyRoomRes {
   roomList: MyRoom[];
 }
 
-interface postCreateRoomReq {
-  roomName: string;
-  userNames: string[];
-}
-
-interface postCreateRoomRes {
-  roomId: number;
-  roomName: string;
-}
-
 export function Room({
   onRoomEvent,
   teamId,
@@ -28,9 +19,11 @@ export function Room({
   onRoomEvent: (teamId: number) => void;
   teamId: number;
 }) {
-  const [roomlist, setRoomlist] = useState<getMyRoomRes>({
-    roomList: [],
-  });
+  const [roomlist, setRoomlist] = useState<MyRoom[]>([]);
+
+  const onCreate = (newRoom: MyRoom) => {
+    setRoomlist([...roomlist, newRoom]);
+  };
 
   const getRoomlist = async () => {
     try {
@@ -42,7 +35,7 @@ export function Room({
           },
         }
       );
-      setRoomlist(res.data);
+      setRoomlist((prevRoomlist) => [...prevRoomlist, ...res.data.roomList]);
     } catch (error) {
       //더미 데이터
       const exam: getMyRoomRes = {
@@ -113,10 +106,13 @@ export function Room({
         >
           +
         </button>
-        <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <Modal
+          title="Basic Modal"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          <CreateRoom onCreate={onCreate} teamId={teamId}></CreateRoom>
         </Modal>
       </div>
       <div>

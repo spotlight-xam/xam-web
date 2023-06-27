@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import { Modal } from 'antd';
+import { Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { CreateTeam } from "./CreateTeam";
 
@@ -22,8 +22,12 @@ export function Team({
 }) {
   const [teamlist, setTeamlist] = useState<getMyTeamRes>({ myTeamList: [] });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  //모달
   const showModal = () => {
     setIsModalOpen(true);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   const getTeamlist = async () => {
@@ -116,14 +120,16 @@ export function Team({
       >
         <PlusOutlined />
       </div>
-      <Modal 
+      <Modal
         title="Team Create"
         centered
-        open={isModalOpen} 
+        open={isModalOpen}
+        onCancel={handleCancel}
         width={1300}
-        >
-          <CreateTeam />
-        </Modal>
+        footer={[]}
+      >
+        <CreateTeam />
+      </Modal>
     </div>
   );
 }
