@@ -1,17 +1,44 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
-import { useState } from "react";
 
-export interface Data {
-  date: String;
-  name: String;
-  content: String;
+interface Member {
+  username: String;
+  email: String;
 }
 
-export function Chat() {
-  const getData = () => {};
+interface getMessageRes {
+  roomId: number;
+  chatId: number;
+  message: string;
+  sender: Member[];
+}
 
-  const [data, setData] = useState<Data[]>([]);
+export function Chat({ roomId }: { roomId: number }) {
+  const [page, setPage] = useState(1);
+  const [chatlist, setChatlist] = useState<getMessageRes[]>([]);
+
+  useEffect(() => {
+    getChatlist();
+  }, [roomId, page]);
+
+  const getChatlist = async () => {
+    try {
+      const res = await axios.get<getMessageRes[]>(
+        `localhost:8080/team/${roomId}/message?page=${page}`,
+        {
+          headers: {
+            authorization: `Bearer ${(localStorage.getItem("token"), roomId)}`,
+          },
+        }
+      );
+      setChatlist(res.data);
+    } catch (error) {
+      //더미 데이터
+      const exam = {};
+    }
+  };
 
   return (
     <div style={{ height: "100%", width: "100%" }}>

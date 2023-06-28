@@ -16,7 +16,7 @@ interface getMessageRes {
   time: string; // 채팅 발송 시간
 }
 
-export function Dialog({ roomData }: { roomData: number }) {
+export function Dialog({ roomId }: { roomId: number }) {
   //입력
   const [message, setMessage] = useState("");
   const [chatlist, setChatlist] = useState<getMessageRes>();
@@ -28,12 +28,10 @@ export function Dialog({ roomData }: { roomData: number }) {
   const getChatlist = async () => {
     try {
       const res = await axios.get<getMessageRes>(
-        `localhost:8080/team/${roomData}/room`,
+        `localhost:8080/team/${roomId}/room`,
         {
           headers: {
-            authorization: `Bearer ${
-              (localStorage.getItem("token"), roomData)
-            }`,
+            authorization: `Bearer ${(localStorage.getItem("token"), roomId)}`,
           },
         }
       );
