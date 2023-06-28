@@ -18,11 +18,11 @@ export function CreateRoom({
   onCreate: (newRoom: postCreateRoomRes) => void;
   teamId: number;
 }) {
-  const [roomName, setRoomName] = useState("");
+  const [roomName, setRoomName] = useState<postCreateRoomReq>({roomName: ""});
   const mainColor = "#F4900C";
 
   const onRoomName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRoomName(event.target.value);
+    setRoomName({roomName:event.target.value});
   };
 
   const onCreateRoom = async () => {
@@ -75,13 +75,13 @@ export function CreateRoom({
           style={{
             display: "flex",
             flexDirection: "column",
+            alignItems: 'center',
             fontWeight: "bold",
             fontSize: "40px",
           }}
         >
-          <div>
-            Create your <span style={{ color: mainColor }}>channel</span>
-          </div>
+          <div>Create</div>
+          <span style={{ color: mainColor }}>Channel</span>
         </div>
       </div>
       <div
@@ -105,7 +105,7 @@ export function CreateRoom({
             }}
             placeholder="Channel Name"
             onChange={onRoomName}
-            value={roomName}
+            value={roomName.roomName}
           />
         </div>
         <Button
@@ -120,7 +120,7 @@ export function CreateRoom({
           }}
           onClick={onCreateRoom}
         >
-          Apply
+          Create
         </Button>
       </div>
     </div>

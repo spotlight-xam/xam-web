@@ -19,11 +19,13 @@ export function Room({
   onRoomEvent: (teamId: number) => void;
   teamId: number;
 }) {
-  const [roomlist, setRoomlist] = useState<MyRoom[]>([]);
+  const [roomlist, setRoomlist] = useState<getMyRoomRes>({
+    roomList: [],
+  });
 
-  const onCreate = (newRoom: MyRoom) => {
-    setRoomlist([...roomlist, newRoom]);
-  };
+  useEffect(() => {
+    getRoomlist();
+  }, []);
 
   const getRoomlist = async () => {
     try {
@@ -35,9 +37,8 @@ export function Room({
           },
         }
       );
-      setRoomlist((prevRoomlist) => [...prevRoomlist, ...res.data.roomList]);
     } catch (error) {
-      //더미 데이터
+      //채널 더미 데이터
       const exam: getMyRoomRes = {
         roomList: [
           {
@@ -54,6 +55,16 @@ export function Room({
     }
   };
 
+  //채널 추가 및 리스트 업데이트
+  const onCreate = (newRoom : MyRoom) => {
+    setRoomlist((prevState) => {
+      return {
+        ...prevState,
+        roomList: [...prevState.roomList, newRoom],
+      };
+    });
+  }
+
   const chooseRoom = (room: MyRoom) => {
     //채널이 선택되었을 때
     const roomData = room.roomId;
@@ -61,10 +72,6 @@ export function Room({
     alert(`${roomName}` + " 채널로 변경되었습니다.");
     onRoomEvent(roomData);
   };
-
-  useEffect(() => {
-    getRoomlist();
-  }, []);
 
   //모달
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -107,10 +114,12 @@ export function Room({
           +
         </button>
         <Modal
-          title="Basic Modal"
+          title="Create Channel"
           open={isModalOpen}
           onOk={handleOk}
           onCancel={handleCancel}
+          width={900}
+          footer={[]}
         >
           <CreateRoom onCreate={onCreate} teamId={teamId}></CreateRoom>
         </Modal>
