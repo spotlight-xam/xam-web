@@ -17,6 +17,7 @@ export function Home() {
   };
   const onChangeTeam = (teamId: number) => {
     setTeamId(teamId);
+    localStorage.setItem("teamId", JSON.stringify(teamId));
   };
   const onRoomChange = (roomId: number) => {
     setRoomId(roomId);

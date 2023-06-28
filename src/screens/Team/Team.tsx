@@ -30,6 +30,11 @@ export function Team({
     setIsModalOpen(false);
   };
 
+  //팀 리스트 불러오기
+  useEffect(() => {
+    getTeamlist();
+  }, []);
+
   const getTeamlist = async () => {
     try {
       const res = await axios.get<getMyTeamRes>(
@@ -58,10 +63,6 @@ export function Team({
       setTeamlist(exam);
     }
   };
-
-  useEffect(() => {
-    getTeamlist();
-  }, []);
 
   return (
     <div
