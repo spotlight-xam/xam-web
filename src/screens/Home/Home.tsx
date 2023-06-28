@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { Dialog } from "../Chat/Dialog";
 import { Room } from "../Rooms/Room";
 import { Team } from "../Team/Team";
-import Modal from "react-modal";
+import { TeamInfo } from "../Team/TeamInfo";
 
 export function Home() {
   const [authToken, setAuthToken] = useState("");
   const [teamId, setTeamId] = useState(0);
   const [roomId, setRoomId] = useState(0);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const getToken = () => {
     const token = localStorage.getItem("accessToken");
@@ -47,20 +46,7 @@ export function Home() {
           backgroundColor: "#aba2a2",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            color: "white",
-            height: "60px",
-            width: "100%",
-            borderBottom: "solid 1px gray",
-          }}
-        >
-          멋쟁이 사자처럼
-        </div>
-
+        <TeamInfo teamId={teamId} />
         <Room
           onRoomEvent={(teamId: number) => onRoomChange(teamId)}
           teamId={teamId}
@@ -74,13 +60,6 @@ export function Home() {
           height: "100%",
         }}
       >
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={() => setModalIsOpen(false)}
-          style={{}}
-        >
-          This is Modal content
-        </Modal>
         <div
           style={{
             display: "flex",
@@ -88,7 +67,9 @@ export function Home() {
             height: "100%",
             width: "100%",
           }}
-        ></div>
+        >
+          <Dialog roomData={roomId}></Dialog>
+        </div>
         <div
           style={{
             display: "flex",

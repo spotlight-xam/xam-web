@@ -56,14 +56,14 @@ export function Room({
   };
 
   //채널 추가 및 리스트 업데이트
-  const onCreate = (newRoom : MyRoom) => {
+  const onCreate = (newRoom: MyRoom) => {
     setRoomlist((prevState) => {
       return {
         ...prevState,
         roomList: [...prevState.roomList, newRoom],
       };
     });
-  }
+  };
 
   const chooseRoom = (room: MyRoom) => {
     //채널이 선택되었을 때
