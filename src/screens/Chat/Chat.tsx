@@ -8,16 +8,28 @@ interface Member {
   email: String;
 }
 
-interface getMessageRes {
-  roomId: number;
+interface Message {
   chatId: number;
   message: string;
-  sender: Member[];
+  timestamp: string;
+  sender: Member;
+}
+
+interface getMessageListRes {
+  roomId: number;
+  messageList: Message[];
+  page: number;
+  perPage: number; //페이지 당 메시지 수
 }
 
 export function Chat({ roomId }: { roomId: number }) {
+  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [chatlist, setChatlist] = useState<getMessageRes[]>([]);
+  const [messageList, setMessageList] = useState<Message[]>([]);
+
+  const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
 
   useEffect(() => {
     getChatlist();
@@ -25,7 +37,7 @@ export function Chat({ roomId }: { roomId: number }) {
 
   const getChatlist = async () => {
     try {
-      const res = await axios.get<getMessageRes[]>(
+      const res = await axios.get<getMessageListRes[]>(
         `localhost:8080/team/${roomId}/message?page=${page}`,
         {
           headers: {
@@ -33,10 +45,44 @@ export function Chat({ roomId }: { roomId: number }) {
           },
         }
       );
-      setChatlist(res.data);
+      setMessageList(res.data);
     } catch (error) {
       //더미 데이터
-      const exam = {};
+      const exam = {
+        roomId: 3,
+        Message: [
+          {
+            chatId: 1,
+            message: "기획행정부 메세지",
+            timestamp: "2023-06-28T15:30:00Z",
+            sender: {
+              userName: "김유진",
+              email: "uj0791@naver.com",
+            },
+          },
+        ],
+        page: 1,
+        perPage: 1,
+      };
+
+      const exam = {
+        roomId: 5,
+        Message: [
+          {
+            chatId: 1,
+            message: "사무행정부 메세지",
+            timestamp: "2023-06-28T15:30:00Z",
+            sender: {
+              userName: "김유진",
+              email: "uj0791@naver.com",
+            },
+          },
+        ],
+        page: 1,
+        perPage: 1,
+      };
+
+      setMessageList([...messageList, exam]);
     }
   };
 
@@ -61,6 +107,8 @@ export function Chat({ roomId }: { roomId: number }) {
               margin: "10px",
             }}
             placeholder="검색"
+            onChange={onSearch}
+            value={search}
           />
         </div>
       </div>
