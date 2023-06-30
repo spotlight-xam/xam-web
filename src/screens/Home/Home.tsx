@@ -69,7 +69,7 @@ export function Home() {
             width: "100%",
           }}
         >
-          <Dialog roomData={roomId}></Dialog>
+          <Dialog teamId={teamId} roomId={roomId}></Dialog>
         </div>
         <div
           style={{
