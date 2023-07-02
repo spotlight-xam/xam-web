@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Dialog } from "../Chat/Dialog";
 import { Room } from "../Rooms/Room";
 import { Team } from "../Team/Team";
 import { TeamInfo } from "../Team/TeamInfo";
+import { Chat } from "../Chat/Chat";
 
 export function Home() {
   const [authToken, setAuthToken] = useState("");
@@ -69,7 +69,7 @@ export function Home() {
             width: "100%",
           }}
         >
-          <Dialog teamId={teamId} roomId={roomId}></Dialog>
+          <Chat teamId={teamId} roomId={roomId}></Chat>
         </div>
         <div
           style={{
