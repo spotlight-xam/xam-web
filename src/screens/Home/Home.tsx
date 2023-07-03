@@ -3,6 +3,7 @@ import { Room } from "../Rooms/Room";
 import { Team } from "../Team/Team";
 import { TeamInfo } from "../Team/TeamInfo";
 import { Chat } from "../Chat/Chat";
+import { connect } from "react-redux";
 
 export function Home() {
   const [authToken, setAuthToken] = useState("");
@@ -17,7 +18,6 @@ export function Home() {
   };
   const onChangeTeam = (teamId: number) => {
     setTeamId(teamId);
-    localStorage.setItem("teamId", JSON.stringify(teamId));
   };
   const onRoomChange = (roomId: number) => {
     setRoomId(roomId);
